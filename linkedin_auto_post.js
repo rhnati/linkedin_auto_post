@@ -29,22 +29,23 @@ async function postToLinkedIn(postText, mediaLink) {
     const apiUrl = 'https://api.linkedin.com/v2/shares';
 
     const postData = {
-      content: {
-        title: 'Your Post Title',
-        description: postText,
-        shareMediaCategory: 'ARTICLE',
-        media: [
-          {
-            status: 'READY',
-            description: {
-              text: postText,
-            },
-            originalUrl: mediaLink,
-          },
-        ],
+      owner: 'urn:li:person:77e9epcqkrfiq3',
+      subject: 'Your Post Title',
+      text: {
+        text: postText,
       },
       distribution: {
         linkedInDistributionTarget: {},
+      },
+      content: {
+        contentEntities: [
+          {
+            entity: {
+              location: mediaLink,
+            },
+          },
+        ],
+        shareMediaCategory: 'ARTICLE',
       },
     };
 
