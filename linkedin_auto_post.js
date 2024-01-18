@@ -26,20 +26,7 @@ async function fetchAutopost() {
 
 async function postToLinkedIn(postText, mediaLink) {
   try {
-    const apiUrl = `https://api.linkedin.com/v2/people/~:(id)?format=json`;
-
-    const profileResponse = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Restli-Protocol-Version': '2.0.0',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const profileData = await profileResponse.json();
-
-    const memberID = profileData.id;
+    const memberID = 'sportscoreio';
 
     const shareApiUrl = `https://api.linkedin.com/v2/people/${memberID}/shares`;
 
