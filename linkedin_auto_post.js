@@ -29,8 +29,6 @@ async function postToLinkedIn(postText, mediaLink) {
     const apiUrl = 'https://api.linkedin.com/v2/shares';
 
     const postData = {
-      owner: 'urn:li:person:77e9epcqkrfiq3',
-      subject: 'Your Post Title',
       text: {
         text: postText,
       },
@@ -48,6 +46,7 @@ async function postToLinkedIn(postText, mediaLink) {
         shareMediaCategory: 'ARTICLE',
       },
     };
+    
 
     const response = await fetch(apiUrl, {
       method: 'POST',
