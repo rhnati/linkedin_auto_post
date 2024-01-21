@@ -28,7 +28,7 @@ async function postToLinkedIn(postText, mediaLink) {
   try {
     const memberID = '101494871';
 
-    const shareApiUrl = `https://api.linkedin.com/v2/people/${memberID}/shares`;
+    const shareApiUrl = `https://api.linkedin.com/v2/ugcPosts`;
 
     const postData = {
       owner: `urn:li:person:${memberID}`,
