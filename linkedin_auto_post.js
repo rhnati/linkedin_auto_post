@@ -25,9 +25,31 @@ async function fetchAutopost() {
 
 async function postToLinkedIn(postText, mediaLink) {
   try {
+    const apiUrl = 'https://api.linkedin.com/v2/me';
+
+    const profileResponse = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Restli-Protocol-Version': '2.0.0',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const profileData = await profileResponse.json();
+    const memberID = profileData.id;
+
     const shareApiUrl = 'https://api.linkedin.com/v2/shares';
 
     const postData = {
+      owner: `urn:li:person:${memberID}`,
+      subject: 'Your Post Title',
+      text: {
+        text: postText,
+      },
+      distribution: {
+        linkedInDistributionTarget: {},
+      },
       content: {
         contentEntities: [
           {
@@ -36,14 +58,7 @@ async function postToLinkedIn(postText, mediaLink) {
             },
           },
         ],
-        title: 'Your Post Title',
-        description: {
-          text: postText,
-        },
         shareMediaCategory: 'ARTICLE',
-      },
-      distribution: {
-        linkedInDistributionTarget: {},
       },
     };
 
@@ -63,7 +78,6 @@ async function postToLinkedIn(postText, mediaLink) {
     console.error('Error posting on LinkedIn:', error);
   }
 }
-
 
 async function fetchData() {
   try {
