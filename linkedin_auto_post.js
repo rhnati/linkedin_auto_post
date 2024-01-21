@@ -25,7 +25,7 @@ async function fetchAutopost() {
 
 async function postToLinkedIn(postText, mediaLink) {
   try {
-    const memberID = '101494871';
+    const memberID = '77e9epcqkrfiq3';
 
     const shareApiUrl = 'https://api.linkedin.com/v2/shares';
 
