@@ -25,9 +25,9 @@ async function fetchAutopost() {
 
 async function postToLinkedIn(postText, mediaLink) {
   try {
-    const apiUrl = 'https://api.linkedin.com/v2/me';
-
-    const profileResponse = await fetch(apiUrl, {
+    // Get LinkedIn member ID
+    const meApiUrl = 'https://api.linkedin.com/v2/me';
+    const meResponse = await fetch(meApiUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -35,11 +35,10 @@ async function postToLinkedIn(postText, mediaLink) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    const meData = await meResponse.json();
+    const memberID = meData.id;
 
-    const profileData = await profileResponse.json();
-    const memberID = profileData.id;
-
-    const shareApiUrl = 'https://api.linkedin.com/v2/shares';
+    const shareApiUrl = `https://api.linkedin.com/v2/people/${memberID}/shares`;
 
     const postData = {
       owner: `urn:li:person:${memberID}`,
