@@ -25,30 +25,9 @@ async function fetchAutopost() {
 
 async function postToLinkedIn(postText, mediaLink) {
   try {
-    // Get LinkedIn member ID
-    const meApiUrl = 'https://api.linkedin.com/v2/me';
-    const meResponse = await fetch(meApiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Restli-Protocol-Version': '2.0.0',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const meData = await meResponse.json();
-    const memberID = meData.id;
-
-    const shareApiUrl = `https://api.linkedin.com/v2/people/${memberID}/shares`;
+    const shareApiUrl = 'https://api.linkedin.com/v2/shares';
 
     const postData = {
-      owner: `urn:li:person:${memberID}`,
-      subject: 'Your Post Title',
-      text: {
-        text: postText,
-      },
-      distribution: {
-        linkedInDistributionTarget: {},
-      },
       content: {
         contentEntities: [
           {
@@ -57,7 +36,14 @@ async function postToLinkedIn(postText, mediaLink) {
             },
           },
         ],
+        title: 'Your Post Title',
+        description: {
+          text: postText,
+        },
         shareMediaCategory: 'ARTICLE',
+      },
+      distribution: {
+        linkedInDistributionTarget: {},
       },
     };
 
