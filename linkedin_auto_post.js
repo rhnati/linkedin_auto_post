@@ -9,12 +9,11 @@ const postedMatches = new Set();
 
 async function fetchAutopost() {
   try {
-    const response = await fetch('https://sportscore.io/api/v1/autopost/settings/linkedin/', {
+    const response = await fetch('https://sportscore.io/api/v1/autopost/settings/tumblr/', {
       method: 'GET',
       headers: {
         "accept": "application/json",
         'X-API-Key': 'uqzmebqojezbivd2dmpakmj93j7gjm',
-        'Authorization': `Bearer ${accessToken}`,
       },
     });
     const data = await response.json();
