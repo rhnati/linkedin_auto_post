@@ -36,10 +36,15 @@ async function getLinkedInMemberID() {
     });
 
     const responseData = await response.json();
-    
-    memberID = responseData.id;
 
-    return memberID;
+    if (response.ok) {
+      // Extract LinkedIn member ID from the response
+      memberID = responseData.id;
+      return memberID;
+    } else {
+      console.error('Error fetching LinkedIn member ID:', responseData);
+      return null;
+    }
   } catch (error) {
     console.error('Error fetching LinkedIn member ID:', error);
     return null;
