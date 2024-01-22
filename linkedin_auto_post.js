@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 
 const accessToken = 'AQVF82vyQHcOYPLx5vshm2r80qDiLOAYLsAMklZuDxsHawGHBAuqbcZ3U-kop5EqJ5Ram0XWUoAwEqN43sdKX9OdqfqyRqMVcU3rTCmweYkXJNm7oz5AsaAzjGqQdY79pG2CRyU_mRIxYtCDWd3P2kkW5swBmCGse3Qu99oIIDNCtozW8fR9_x1L1UlAukYy7fwbYdiRx8I9ww223keA_hzKHsK53QZtzTNC64IEVcvMc2gJNtwxYNqFRTtlfA5QOenhCd82cnC-_RxzoG_ISamD0L-dHinMp0PSx_5ZJImiNlLMaZwJlg-TgLLiIcXQ8eYGZ1CpAga_ggAlKHqcn0_9wMHLZg';
-
-// Assuming these variables are used later in the code
+let memberID;
 let autopostData;
 let matchIndex = 0;
 const postedMatches = new Set();
@@ -23,10 +22,11 @@ async function fetchAutopost() {
   }
 }
 
-async function postToLinkedIn(postText, mediaLink) {
+async function getLinkedInMemberID() {
   try {
     const meApiUrl = 'https://api.linkedin.com/v2/me';
-    const meResponse = await fetch(meApiUrl, {
+
+    const response = await fetch(meApiUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -35,33 +35,55 @@ async function postToLinkedIn(postText, mediaLink) {
       },
     });
 
-    const meData = await meResponse.json();
-    const memberID = meData.id;
+    const responseData = await response.json();
+    
+    memberID = responseData.id;
 
-    const shareApiUrl = `https://api.linkedin.com/v2/people/${memberID}/shares`;
+    return memberID;
+  } catch (error) {
+    console.error('Error fetching LinkedIn member ID:', error);
+    return null;
+  }
+}
+
+async function postToLinkedIn(postText, mediaLink) {
+  try {
+    if (!memberID) {
+      memberID = await getLinkedInMemberID();
+      if (!memberID) {
+        console.error('Unable to fetch LinkedIn member ID.');
+        return;
+      }
+    }
+
+    const ugcPostApiUrl = 'https://api.linkedin.com/v2/ugcPosts';
 
     const postData = {
-      owner: `urn:li:person:${memberID}`,
-      subject: 'Your Post Title',
-      text: {
-        text: postText,
-      },
-      distribution: {
-        linkedInDistributionTarget: {},
-      },
-      content: {
-        contentEntities: [
-          {
-            entity: {
-              location: mediaLink,
-            },
+      author: `urn:li:person:${memberID}`,
+      lifecycleState: 'PUBLISHED',
+      specificContent: {
+        'com.linkedin.ugc.ShareContent': {
+          shareCommentary: {
+            text: postText,
           },
-        ],
-        shareMediaCategory: 'ARTICLE',
+          shareMediaCategory: 'ARTICLE',
+          media: [
+            {
+              status: 'READY',
+              description: {
+                text: postText,
+              },
+              originalUrl: mediaLink,
+            },
+          ],
+        },
+      },
+      visibility: {
+        'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
       },
     };
 
-    const response = await fetch(shareApiUrl, {
+    const response = await fetch(ugcPostApiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
