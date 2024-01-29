@@ -158,15 +158,15 @@ async function getMatch(matchGroup) {
         const photoLink = match.social_picture;
         const hashtags = `#${homeTeam.replace(/\s+/g, '')} #${awayTeam.replace(/\s+/g, '')} #${league.replace(/\s+/g, '')}`;
 
-        function encodeHashtag(hashtag) {
-          return encodeURIComponent(hashtag.replace(/#/g, ''));
-        }
+        let postContent = `💥⚽️💥 ${homeTeam} vs ${awayTeam} League: ${league} 💥⚽️💥\n\n`;
+        postContent += `Watch Now on SportScore: ${matchLink}\n\n`;
 
-        let postContent = `💥⚽️💥 ${homeTeam} vs ${awayTeam} League: ${league} 💥⚽️💥<br>`;
-        postContent += `Watch Now on SportScore: <a href="${matchLink}" target="_blank">${matchLink}</a><br>`;
-        postContent += `<a href="https://www.linkedin.com/search/results/content/?keywords=${encodeHashtag(homeTeam)}" target="_blank">#${homeTeam.replace(/\s+/g, '')}</a> `;
-        postContent += `<a href="https://www.linkedin.com/search/results/content/?keywords=${encodeHashtag(awayTeam)}" target="_blank">#${awayTeam.replace(/\s+/g, '')}</a> `;
-        postContent += `<a href="https://www.linkedin.com/search/results/content/?keywords=${encodeHashtag(league)}" target="_blank">#${league.replace(/\s+/g, '')}</a><br>`;
+        const formattedHashtags = hashtags
+          .split(' ')
+          .map((tag) => `[${tag}](https://www.reddit.com/r/${subreddit}/search/?q=${encodeURIComponent(tag)}&restrict_sr=on&sort=new)`)
+          .join(' ');
+
+        postContent += `${formattedHashtags}\n\n`;
 
         // Post to LinkedIn after 1 minute interval
         setTimeout(() => {
