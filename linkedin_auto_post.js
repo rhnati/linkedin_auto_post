@@ -157,7 +157,7 @@ async function getMatch(matchGroup) {
         const matchLink = match.url;
         const hashtags = `#${homeTeam.replace(/\s+/g, '')} #${awayTeam.replace(/\s+/g, '')} #${league.replace(/\s+/g, '')}`;
 
-        let postContent = `🎌Match Started!🎌`;
+        let postContent = `🎌Match Started!🎌\n\n`;
         postContent += `💥⚽️💥 ${homeTeam} vs ${awayTeam} League: ${league} 💥⚽️💥\n\n`;
         postContent += `Watch Now on SportScore: ${matchLink}\n\n`;
 
