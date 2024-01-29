@@ -163,7 +163,7 @@ async function getMatch(matchGroup) {
 
         const formattedHashtags = hashtags
           .split(' ')
-          .map((tag) => `[${tag}](https://www.reddit.com/r/${subreddit}/search/?q=${encodeURIComponent(tag)}&restrict_sr=on&sort=new)`)
+          .map((tag) => `[${tag}](https://www.linkedin.com/search/results/content/?keywords=${encodeURIComponent(tag)})`)
           .join(' ');
 
         postContent += `${formattedHashtags}\n\n`;
