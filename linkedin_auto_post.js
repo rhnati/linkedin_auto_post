@@ -163,14 +163,14 @@ async function getMatch(matchGroup) {
 
         const formattedHashtags = hashtags
           .split(' ')
-          .map((tag) => `[${tag}](https://www.linkedin.com/search/results/content/?keywords=${encodeURIComponent(tag)})`)
+          .map((tag) => `${tag}`)
           .join(' ');
 
-        postContent += `${formattedHashtags}\n\n`;
+        postContent += `${hashtags}\n\n`;
 
         // Post to LinkedIn after 1 minute interval
         setTimeout(() => {
-          postToLinkedIn(postContent, photoLink);
+          postToLinkedIn(postContent, matchLink);
         }, matchIndex * 60000); // Adjusted interval based on matchIndex
 
         // Add matchId to the set to avoid reposting
