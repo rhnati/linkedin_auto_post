@@ -155,16 +155,11 @@ async function getMatch(matchGroup) {
         const awayTeam = match.away_team.name;
         const league = competition;
         const matchLink = match.url;
-        const photoLink = match.social_picture;
         const hashtags = `#${homeTeam.replace(/\s+/g, '')} #${awayTeam.replace(/\s+/g, '')} #${league.replace(/\s+/g, '')}`;
 
-        let postContent = `💥⚽️💥 ${homeTeam} vs ${awayTeam} League: ${league} 💥⚽️💥\n\n`;
+        let postContent = `🎌Match Started!🎌`;
+        postContent += `💥⚽️💥 ${homeTeam} vs ${awayTeam} League: ${league} 💥⚽️💥\n\n`;
         postContent += `Watch Now on SportScore: ${matchLink}\n\n`;
-
-        const formattedHashtags = hashtags
-          .split(' ')
-          .map((tag) => `${tag}`)
-          .join(' ');
 
         postContent += `${hashtags}\n\n`;
 
